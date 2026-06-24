@@ -223,6 +223,13 @@ a { color: inherit; text-decoration: none; }
   font-size: 8pt;
 }
 
+/* Certification links inherit the sidebar text colour (clean in the PDF);
+   a hover underline makes them discoverable as links on screen. */
+.sidebar-section.certifications a:hover {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
 /* Language list: two-column display */
 .sidebar-section.languages li {
   display: grid;
