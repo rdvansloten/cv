@@ -1,0 +1,515 @@
+/* ---------- Self-hosted Inter (Variable, Roman) ----------
+   Single file covers weights 100–900 via the variable font axis.
+   Sourced from Google Fonts (Inter v20) and committed to the repo so the
+   page renders identically with no network. */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('../assets/fonts/Inter.woff2') format('woff2');
+}
+
+/* ---------- Design tokens ----------
+   The 7 vars after `--color-accent` can be overridden via the `style:` block
+   in content.md's frontmatter (see js/main.js → applyStyle). */
+:root {
+  --color-sidebar: #173e5e;
+  --color-sidebar-dim: #b9c7d5;
+  --color-accent: #f3a583;
+  --color-text: #2c3e50;
+  --color-muted: #5e7a9b;
+  --color-heading: #173e5e;
+  --color-rule: #d6dde4;
+
+  /* Overridable from frontmatter */
+  --font-size-main: 10pt;
+  --font-size-sidebar: 9pt;
+  --font-size-main-h: 12pt;
+  --font-size-sidebar-h: 11pt;
+  --color-name: var(--color-accent);
+  --color-icon: var(--color-accent);
+  --color-marker-sidebar: var(--color-accent);
+  --color-marker-main: var(--color-muted);
+
+  --sidebar-width: 33%;
+  --page-padding-v: 14mm;
+  --sidebar-padding-h: 9mm;
+  --main-padding-h: 11mm;
+
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* ---------- Reset / base ---------- */
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html, body { margin: 0; padding: 0; }
+
+body {
+  font-family: var(--font-sans);
+  font-size: var(--font-size-main);
+  line-height: 1.55;
+  color: var(--color-text);
+  background: #e9ecf1;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+a { color: inherit; text-decoration: none; }
+
+/* ---------- Screen frame (mimics paper) ---------- */
+.page-frame {
+  max-width: 210mm;
+  margin: 24px auto;
+  background: #fff;
+  box-shadow: 0 12px 40px rgba(20, 35, 60, 0.18);
+}
+
+/* ---------- Two-column gradient background ----------
+   On screen the gradient lives on `.cv` so it sits inside the paper-card
+   frame. For print it gets disabled in favour of `.page-background`
+   (declared below) which fixed-positions a full-bleed gradient that
+   Chrome repeats on every printed page — so the sidebar colour reaches
+   the very top (above the @page margin) and the very bottom of every
+   page, including the last one. */
+.cv {
+  position: relative;
+  display: flex;
+  min-height: 297mm;
+  background:
+    linear-gradient(
+      to right,
+      var(--color-sidebar) 0%,
+      var(--color-sidebar) var(--sidebar-width),
+      #fff var(--sidebar-width),
+      #fff 100%
+    );
+}
+
+.page-background { display: none; }
+
+/* ---------- Sidebar ---------- */
+.sidebar {
+  width: var(--sidebar-width);
+  padding: var(--page-padding-v) var(--sidebar-padding-h);
+  color: #fff;
+  font-size: var(--font-size-sidebar);
+  line-height: 1.5;
+}
+
+.sidebar .photo {
+  position: relative;
+  width: 38mm;
+  height: 38mm;
+  border-radius: 50%;
+  overflow: hidden;
+  margin: 0 auto 8mm;
+  background:
+    radial-gradient(circle at 50% 30%, rgba(255, 255, 255, 0.08), transparent 65%),
+    #2a5481;
+  border: 2px solid rgba(255, 255, 255, 0.15);
+}
+
+/* The image is intentionally a touch larger than its container so the
+   circular clip never reveals a sliver of background at the edges. */
+.sidebar .photo-img {
+  position: absolute;
+  top: -1%;
+  left: -1%;
+  width: 102%;
+  height: 102%;
+  object-fit: cover;
+  display: none;
+}
+
+.sidebar .photo-img[src] {
+  display: block;
+}
+
+.contact {
+  display: flex;
+  flex-direction: column;
+  gap: 3mm;
+  margin-bottom: 8mm;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: 3mm;
+  font-size: var(--font-size-sidebar);
+}
+
+.contact-item svg {
+  flex-shrink: 0;
+  color: var(--color-icon);
+}
+
+.sidebar h2 {
+  font-size: var(--font-size-sidebar-h);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin: 0 0 3mm;
+  padding-bottom: 2mm;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.sidebar-section {
+  margin-bottom: 7mm;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+/* ---------- Collapsible sidebar sections ----------
+   At narrow widths these toggle via the native <details> behaviour.
+   At ≥701px and in print, JS forces them open and the CSS below hides
+   the chevron and makes the summary look like a plain h2 row. */
+.sidebar-section.collapsible > summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 0 3mm;
+  padding-bottom: 2mm;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.sidebar-section.collapsible > summary::-webkit-details-marker { display: none; }
+.sidebar-section.collapsible > summary::marker { content: ''; }
+
+.sidebar-section.collapsible > summary > h2 {
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+.sidebar-section.collapsible > summary::after {
+  content: '+';
+  color: var(--color-marker-sidebar);
+  font-weight: 300;
+  font-size: 14pt;
+  line-height: 1;
+  margin-left: 1em;
+}
+
+.sidebar-section.collapsible[open] > summary::after { content: '−'; }
+
+.sidebar-section p {
+  margin: 0 0 2mm;
+}
+
+.sidebar-section ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-section li {
+  position: relative;
+  padding-left: 5mm;
+  margin-bottom: 1.4mm;
+}
+
+.sidebar-section li::before {
+  content: '◊';
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--color-marker-sidebar);
+  font-size: 8pt;
+}
+
+/* Language list: two-column display */
+.sidebar-section.languages li {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3mm;
+}
+.sidebar-section.languages li .lang-level {
+  color: var(--color-sidebar-dim);
+}
+
+/* ---------- Main column ---------- */
+.main {
+  width: calc(100% - var(--sidebar-width));
+  padding: var(--page-padding-v) var(--main-padding-h);
+}
+
+.masthead {
+  margin-bottom: 8mm;
+}
+
+.masthead h1 {
+  font-size: 26pt;
+  font-weight: 600;
+  margin: 0;
+  color: var(--color-name);
+  letter-spacing: 0.01em;
+  line-height: 1.1;
+}
+
+.masthead .subtitle {
+  font-size: 12pt;
+  font-weight: 400;
+  color: var(--color-muted);
+  margin-top: 1mm;
+}
+
+.main h2 {
+  font-size: var(--font-size-main-h);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-heading);
+  margin: 7mm 0 4mm;
+  padding-bottom: 1.5mm;
+}
+
+.main h2:first-of-type { margin-top: 0; }
+
+.main-section {
+  margin-bottom: 4mm;
+}
+
+/* Experience / education entries */
+.entry {
+  margin-bottom: 6mm;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.entry h3 {
+  font-size: 10.5pt;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-heading);
+  margin: 0 0 0.5mm;
+}
+
+.entry .entry-meta {
+  font-size: 9.5pt;
+  color: var(--color-muted);
+  margin: 0 0 2.5mm;
+  font-style: normal;
+}
+
+.entry p {
+  margin: 0 0 2mm;
+}
+
+.entry ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 2mm;
+}
+
+.entry li {
+  position: relative;
+  padding-left: 5mm;
+  margin-bottom: 0.8mm;
+}
+
+.entry li::before {
+  content: '»';
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--color-marker-main);
+  font-weight: 700;
+}
+
+/* Soft skills as a bulleted list */
+.soft-skills ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.soft-skills li {
+  position: relative;
+  padding-left: 5mm;
+  margin-bottom: 1mm;
+}
+
+.soft-skills li::before {
+  content: '»';
+  position: absolute;
+  left: 0;
+  color: var(--color-marker-main);
+  font-weight: 700;
+}
+
+/* Technical skills: grid of categories */
+.technical-skills .skills-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3mm 8mm;
+}
+
+.technical-skills .skill-group {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.technical-skills .skill-group h3 {
+  font-size: 10pt;
+  font-weight: 600;
+  color: var(--color-heading);
+  margin: 0 0 1.5mm;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.technical-skills .skill-group ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.technical-skills .skill-group li {
+  position: relative;
+  padding-left: 5mm;
+  margin-bottom: 0.5mm;
+}
+
+.technical-skills .skill-group li::before {
+  content: '»';
+  position: absolute;
+  left: 0;
+  color: var(--color-marker-main);
+  font-weight: 700;
+}
+
+/* Education: same as entry but no italic body */
+.education .entry { margin-bottom: 4mm; }
+
+/* ---------- Print button (UI only, hidden in PDF) ---------- */
+.print-button {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  background: var(--color-sidebar);
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  font: 500 13px var(--font-sans);
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(20, 35, 60, 0.25);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  z-index: 100;
+}
+
+.print-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px rgba(20, 35, 60, 0.3);
+}
+
+.print-button:active { transform: translateY(0); }
+
+/* ---------- Print rules ---------- */
+@page {
+  size: A4;
+  /* No @page margin — that produced a white strip at the top of every
+     page. Per-page top/bottom breathing room is instead applied as
+     PADDING on `.cv` with `box-decoration-break: clone`, which makes
+     Chromium replicate the padding on each broken page fragment. */
+  margin: 0;
+}
+
+@media print {
+  /* The html background fills the page canvas (including the @page
+     margin area) on every printed page in Chromium. This is the
+     canonical replacement for the position-fixed trick — which
+     Chromium doesn't reliably repeat for full-bleed elements. */
+  html {
+    background: linear-gradient(
+      to right,
+      var(--color-sidebar) 0%,
+      var(--color-sidebar) var(--sidebar-width),
+      #fff var(--sidebar-width),
+      #fff 100%
+    );
+  }
+  body { background: transparent; }
+  .page-frame {
+    max-width: none;
+    margin: 0;
+    box-shadow: none;
+    background: transparent;
+  }
+  .print-button { display: none !important; }
+  /* The .page-background div is unused in this path — kept hidden. */
+  .page-background { display: none; }
+
+  .cv {
+    min-height: 0;
+    background: transparent;
+    /* Cloned padding gives every page-fragment of .cv its own top/bottom
+       breathing room. The html background underneath still reaches the
+       very edges of every page. */
+    padding-top: 14mm;
+    padding-bottom: 10mm;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+  }
+
+  /* .cv now owns the vertical padding, so the columns don't need any. */
+  .sidebar,
+  .main {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  /* Strong page-break protection */
+  .entry,
+  .sidebar-section,
+  .skill-group { break-inside: avoid; page-break-inside: avoid; }
+
+  h2, h3 { break-after: avoid; page-break-after: avoid; }
+
+  /* Collapsible details: hide chevron and force-show body even if the
+     `open` attribute somehow wasn't set (belt-and-braces with beforeprint). */
+  .sidebar-section.collapsible > summary::after { display: none; }
+  .sidebar-section.collapsible > summary { cursor: default; }
+  .sidebar-section.collapsible > .sidebar-section-body { display: block !important; }
+}
+
+/* ---------- Wide viewport: disable the collapsible affordance ----------
+   JS forces `open` on every collapsible section at this width, so we
+   strip the cursor/chevron to make the summary look like a normal h2. */
+@media screen and (min-width: 701px) {
+  .sidebar-section.collapsible > summary { cursor: default; pointer-events: none; }
+  .sidebar-section.collapsible > summary::after { display: none; }
+}
+
+/* ---------- Narrow viewport handling ---------- */
+@media screen and (max-width: 700px) {
+  /* Scale text 1.25× on small screens — the print-tuned base sizes are
+     too small to read comfortably when the layout stacks on a phone.
+     A user override via `style:` in frontmatter still wins because the
+     JS sets inline custom properties on :root, which beat @media rules. */
+  :root {
+    --font-size-main: 12.5pt;
+    --font-size-sidebar: 11.25pt;
+    --font-size-main-h: 15pt;
+    --font-size-sidebar-h: 13.75pt;
+  }
+  .page-frame { margin: 0; }
+  .cv { display: block; background: #fff; }
+  .sidebar {
+    width: 100%;
+    background: var(--color-sidebar);
+  }
+  .main {
+    width: 100%;
+  }
+}
