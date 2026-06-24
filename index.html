@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CV — Rudy van Sloten</title>
+  <link rel="preload" href="assets/fonts/Inter.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div class="page-background" aria-hidden="true"></div>
+  <div class="page-frame">
+    <article class="cv" id="cv" aria-busy="true">
+      <aside class="sidebar">
+        <div class="photo" aria-hidden="true">
+          <img class="photo-img" alt="">
+        </div>
+        <div class="contact" data-slot="contact"></div>
+        <div class="sidebar-content" data-slot="sidebar"></div>
+      </aside>
+      <main class="main">
+        <header class="masthead" data-slot="masthead"></header>
+        <div class="main-content" data-slot="main"></div>
+      </main>
+    </article>
+  </div>
+
+  <a class="print-button" id="download-button" href="cv.pdf" download aria-label="Download PDF">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+      <polyline points="7 10 12 15 17 10"></polyline>
+      <line x1="12" y1="15" x2="12" y2="3"></line>
+    </svg>
+    <span>Download PDF</span>
+  </a>
+
+  <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
