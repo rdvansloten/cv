@@ -27,16 +27,16 @@ Looking for awesome projects with great people. Ask me anything.
 
 ## Certifications
 
-- Linux Foundation: Kubestronaut
-- CKS: Certified Kubernetes Security Specialist
-- CKA: Certified Kubernetes Administrator
-- CKAD: Certified Kubernetes Application Developer
-- KCNA: Kubernetes and Cloud Native Associate
-- KCSA: Kubernetes and Cloud Security Associate
-- Microsoft Certified: DevOps Engineer Expert
-- Microsoft Certified: Azure Solutions Architect Expert
-- Microsoft Certified: Azure Administrator Associate
-- HashiCorp Certified: Terraform Associate
+- [Linux Foundation: Kubestronaut](https://www.cncf.io/training/kubestronaut/)
+- [CKS: Certified Kubernetes Security Specialist](https://www.cncf.io/training/certification/cks/)
+- [CKA: Certified Kubernetes Administrator](https://www.cncf.io/training/certification/cka/)
+- [CKAD: Certified Kubernetes Application Developer](https://www.cncf.io/training/certification/ckad/)
+- [KCNA: Kubernetes and Cloud Native Associate](https://www.cncf.io/training/certification/kcna/)
+- [KCSA: Kubernetes and Cloud Security Associate](https://www.cncf.io/training/certification/kcsa/)
+- [Microsoft Certified: DevOps Engineer Expert](https://learn.microsoft.com/en-us/credentials/certifications/devops-engineer/)
+- [Microsoft Certified: Azure Solutions Architect Expert](https://learn.microsoft.com/en-us/credentials/certifications/azure-solutions-architect/)
+- [Microsoft Certified: Azure Administrator Associate](https://learn.microsoft.com/en-us/credentials/certifications/azure-administrator/)
+- [HashiCorp Certified: Terraform Associate](https://developer.hashicorp.com/terraform/tutorials/certification-003)
 
 ## Languages
 
