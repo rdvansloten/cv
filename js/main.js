@@ -62,15 +62,26 @@ function el(html) {
 }
 
 function renderPhoto(data, root) {
-  if (!data.photo) return;
   const img = root.querySelector('.photo-img');
   if (!img) return;
-  // Probe the URL first — only set src on the real <img> once it loads,
-  // so a missing file leaves the CSS silhouette visible instead of
+  // Candidate portrait sources, tried in order. An explicit `photo:` in the
+  // frontmatter wins; otherwise just drop a file named photo.<ext> into
+  // assets/ and it shows up automatically — no config needed. The .photo
+  // container already clips it to a circle.
+  const exts = ['jpg', 'jpeg', 'png', 'webp', 'avif'];
+  const candidates = [data.photo, ...exts.map(e => `assets/photo.${e}`)]
+    .filter(Boolean);
+
+  // Probe each candidate in turn — only set src on the real <img> once one
+  // loads, so a missing file leaves the CSS silhouette visible instead of
   // showing a broken-image icon.
-  const probe = new Image();
-  probe.onload = () => { img.src = data.photo; };
-  probe.src = data.photo;
+  (function tryNext(i) {
+    if (i >= candidates.length) return;
+    const probe = new Image();
+    probe.onload = () => { img.src = candidates[i]; };
+    probe.onerror = () => tryNext(i + 1);
+    probe.src = candidates[i];
+  })(0);
 }
 
 function renderMasthead(data, slot) {
