@@ -27,6 +27,8 @@ Looking for awesome projects with great people. Ask me anything.
 
 ## Certifications
 
+- Linux Foundation: Kubestronaut
+- CKS: Certified Kubernetes Security Specialist
 - CKA: Certified Kubernetes Administrator
 - CKAD: Certified Kubernetes Application Developer
 - KCNA: Kubernetes and Cloud Native Associate
@@ -44,7 +46,6 @@ Looking for awesome projects with great people. Ask me anything.
 ## Hobbies
 
 - DIY projects
-- 3D Printing
 - Game Development
 
 ## Office / Creative Tools
@@ -60,7 +61,6 @@ Looking for awesome projects with great people. Ask me anything.
 ## Technical Tools
 
 - GitHub
-- Azure DevOps
 - Entra ID
 - GitLab
 - Terraform
@@ -68,14 +68,30 @@ Looking for awesome projects with great people. Ask me anything.
 - Docker
 - Kubernetes
 - Prometheus
+- Loki
+- Mimir
 - Grafana
 - DataDog
-- Visual Studio Code
 
 ## Professional Experience
 
+### Senior Observability Engineer, Albert Heijn
+*May 2025 – Present, Zaandam, NL*
+
+Operated the central observability platform based on Grafana's LGTM stack, giving various teams across the world unified insight into metrics, logs and traces across a large-scale retail platform.
+
+- Maintain and improve the observability stack: Loki for logging, Mimir for metrics, Tempo for tracing, Grafana for user interfacing and OpenTelemetry for instrumentation
+- Standardized telemetry collection across services on Kubernetes, Windows, Linux and Azure
+- Improved data collection, scaling, dashboards, and alerting to improve reliability and reduce mean time to resolution
+- Coached engineering teams on setting up and optimizing instrumentation and alerting
+
+### Cloud Architect, Hyfen
+*May 2025 – Present, Amsterdam, NL*
+
+Provide intermittent advice and design propositions for the continuous improvement of Hyfen's multi-tenant cloud and Kubernetes platform.
+
 ### Interim Cloud Lead, Hyfen
-*March 2024 – Present, Amsterdam, NL*
+*March 2024 – May 2025, Amsterdam, NL*
 
 Lead a small team migrating Hyfen onto a modern Azure platform.
 
