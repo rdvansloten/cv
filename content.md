@@ -3,8 +3,6 @@ name: Rudy van Sloten
 title: Freelance Cloud Architect / Platform Engineer
 photo: assets/photo.jpg
 location: Amsterdam, NL
-phone: +31 6 48 16 45 21
-email: rdvansloten@outlook.com
 github: github.com/rdvansloten
 
 # Optional design knobs. Uncomment any line to override the default.
@@ -42,11 +40,6 @@ Looking for awesome projects with great people. Ask me anything.
 
 - Dutch — Native
 - English — Excellent
-
-## Hobbies
-
-- DIY projects
-- Game Development
 
 ## Office / Creative Tools
 
@@ -173,13 +166,14 @@ Milestones:
 ### Platforms
 - Microsoft Azure
 - Amazon AWS
+- OVHcloud
 - Cloudflare / Akamai
 - Microsoft Windows / Linux Server
 
 ### Technologies
 - Serverless
 - Caching
-- Kubernetes
+- Container Orchestration
 - CI/CD Pipelines
 
 ### Programming/Scripting
@@ -190,6 +184,6 @@ Milestones:
 
 ### Databases
 - Cosmos DB
-- Microsoft SQL / MySQL
+- SQL / MySQL / PostgreSQL
 - Redis
 - MongoDB
