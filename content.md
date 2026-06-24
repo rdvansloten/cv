@@ -125,7 +125,6 @@ Lead a small team of cloud engineers and Azure solution architects: career devel
 
 Maintained and improved Funda's .NET ecosystem on AKS, supporting developer teams on CI/CD, monitoring, and adoption of serverless, distributed caching, databases, storage, and secrets management. Ran knowledge-sharing/Q&A sessions, coached juniors 1-on-1, and acted as primary liaison with vendors.
 
-Milestones:
 - Migrated traditional datacenter setup to Microsoft Azure
 - Migrated DC/OS (Apache Mesos) workloads to Kubernetes
 - Became a Certified Kubernetes Administrator
@@ -135,7 +134,6 @@ Milestones:
 
 Pre-sales architect advising clients on complex software and design problems; liaison across teams. Laid the groundwork for a new Cloud Engineering team using GitLab, Terraform, Ansible, PowerShell, and Python.
 
-Milestones:
 - Pushed adoption and automation of Microsoft Azure
 - Built out Datadog as the monitoring solution
 - Initiated and lead the cloud-native engineering team (counterpart to the datacenter-focused engineering teams)
