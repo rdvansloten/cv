@@ -69,7 +69,8 @@ def test_experience_has_entries(section_map):
 def test_entries_have_italic_meta_line(section_map, section_name):
     """Each ### entry must be followed by an italic line (*date, location*).
     The renderer pulls that line out into .entry-meta — without it the
-    metadata renders as a normal paragraph."""
+    metadata renders as a normal paragraph. Either emphasis marker is fine:
+    marked.js treats *x* and _x_ alike, and prettier rewrites * to _."""
     entries = split_h3(section_map[section_name])
     assert entries, f"{section_name} has no ### entries"
     for title, content in entries:
@@ -77,7 +78,7 @@ def test_entries_have_italic_meta_line(section_map, section_name):
             (ln for ln in content.splitlines() if ln.strip()),
             "",
         )
-        assert re.match(r"^\*[^*].*\*\s*$", first_line), (
+        assert re.match(r"^\*[^*].*\*\s*$|^_[^_].*_\s*$", first_line), (
             f"entry '{title}' in {section_name}: first non-blank line must be "
             f"italic markdown like '*Date, Location*', got {first_line!r}"
         )
