@@ -45,7 +45,14 @@ def local_server(directory: Path):
 
 def main() -> int:
     with local_server(ROOT) as port, sync_playwright() as p:
-        browser = p.chromium.launch()
+        # --font-render-hinting=none: on Linux (i.e. the GitHub Actions runner)
+        # headless Chromium hints glyphs, which quantises every advance to a
+        # whole point. It then emits one Tj per glyph with integer Td offsets,
+        # so text comes out ~4% wider with visibly uneven spacing — the PDF
+        # stops matching the browser. Unhinted, it emits whole strings and lets
+        # the font's own advances do the spacing, as macOS already does (where
+        # this flag is a no-op).
+        browser = p.chromium.launch(args=["--font-render-hinting=none"])
         try:
             page = browser.new_page()
             page.goto(f"http://127.0.0.1:{port}/", wait_until="networkidle")

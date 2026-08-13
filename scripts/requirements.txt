@@ -1,2 +1,5 @@
-playwright>=1.45,<2
+# Playwright is pinned exactly: the version determines the bundled Chromium
+# build, and Chromium's PDF text layout is not stable across versions. Bump it
+# deliberately, then re-check cv.pdf rather than letting CI drift on its own.
+playwright==1.59.0
 fonttools[woff]>=4.53
