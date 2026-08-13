@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import os
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -23,33 +24,46 @@ def test_requirements_lists_playwright(root: Path):
     assert "playwright" in req.read_text(encoding="utf-8")
 
 
-def test_workflow_present_and_triggers_on_content_changes(root: Path):
-    """The workflow should re-run on content/code changes but not on cv.pdf changes
-    (otherwise the commit-back step would loop)."""
-    wf = root / ".github" / "workflows" / "build-pdf.yml"
-    assert wf.exists(), "Missing .github/workflows/build-pdf.yml"
+def test_workflow_builds_and_ships_the_pdf(root: Path):
+    """cv.pdf is gitignored, so the deploy workflow is the only thing that
+    produces the PDF the site serves — it has to build it and copy it in."""
+    wf = root / ".github" / "workflows" / "deploy.yml"
+    assert wf.exists(), "Missing .github/workflows/deploy.yml"
     text = wf.read_text(encoding="utf-8")
 
-    # Triggers on the things that affect the rendered PDF
-    for needed in ("content.md", "index.html", "css/**", "js/**", "scripts/**"):
-        assert needed in text, f"workflow missing trigger for {needed}"
-
-    # Must NOT list cv.pdf in trigger paths (would create a loop)
-    assert "'cv.pdf'" not in text and '"cv.pdf"' not in text, \
-        "workflow should not trigger on cv.pdf changes (would loop)"
-
-    # The commit-back step is what makes the loop possible; require [skip ci]
-    # or an equivalent guard.
-    assert "[skip ci]" in text, "commit-back message should include [skip ci] to be extra safe"
-
-    # Needs write permission to push the regenerated PDF
-    assert "contents: write" in text
+    assert "scripts/ci_docker.sh" in text, \
+        "workflow should build the PDF via scripts/ci_docker.sh, so CI and " \
+        "local builds use the same container"
+    assert "cv.pdf" in text, "workflow should copy cv.pdf into the site artifact"
+    assert "branches: [main]" in text
 
 
-def test_workflow_installs_chromium(root: Path):
-    text = (root / ".github" / "workflows" / "build-pdf.yml").read_text(encoding="utf-8")
-    assert "playwright install" in text
-    assert "chromium" in text
+def test_pdf_build_runs_in_the_pinned_container(root: Path):
+    """Chromium's PDF text layout is host-dependent, so the build container and
+    the Playwright version pinned in requirements.txt must agree — a mismatch
+    makes Playwright reject the image's preinstalled browser and fetch its own,
+    quietly reintroducing the drift the container exists to prevent."""
+    script = (root / "scripts" / "ci_docker.sh").read_text(encoding="utf-8")
+    req = (root / "scripts" / "requirements.txt").read_text(encoding="utf-8")
+
+    image = re.search(r"mcr\.microsoft\.com/playwright/python:v([\d.]+)-", script)
+    assert image, "ci_docker.sh should pin a versioned Playwright image"
+
+    pin = re.search(r"^playwright==([\d.]+)", req, re.M)
+    assert pin, "requirements.txt should pin playwright to an exact version"
+
+    assert image.group(1) == pin.group(1), (
+        f"image is Playwright v{image.group(1)} but requirements.txt pins "
+        f"{pin.group(1)} — they must match"
+    )
+
+
+def test_verifier_guards_against_renderer_regressions(root: Path):
+    script = root / "scripts" / "verify_pdf.py"
+    assert script.exists(), "scripts/verify_pdf.py is missing"
+    text = script.read_text(encoding="utf-8")
+    assert "Type3" in text, "should still check for Type 3 font fallback"
+    assert "Td" in text, "should still check glyph advances aren't hint-quantised"
 
 
 @pytest.mark.skipif(

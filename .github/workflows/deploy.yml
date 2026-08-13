@@ -22,18 +22,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-          cache: pip
-          cache-dependency-path: scripts/requirements.txt
-
-      - run: pip install -r scripts/requirements.txt
-
-      - run: python -m playwright install --with-deps chromium
-
-      - name: Generate cv.pdf
-        run: python scripts/generate_pdf.py
+      # Built in a pinned container rather than on the runner directly, so the
+      # exact same image produces the PDF here and on a developer machine.
+      # Chromium's PDF text layout depends on the host (glyph hinting differs
+      # between Linux and macOS), and it is not otherwise checkable locally.
+      # Same entrypoint as `scripts/ci_docker.sh` run by hand.
+      - name: Generate and verify cv.pdf
+        run: scripts/ci_docker.sh
 
       - name: Assemble site
         run: |

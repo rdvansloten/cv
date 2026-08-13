@@ -6,16 +6,23 @@ import pytest
 from conftest import split_h3
 
 
-REQUIRED_FRONTMATTER = ["name", "title", "location", "phone", "email", "github"]
+REQUIRED_FRONTMATTER = ["name", "title", "location", "github"]
+
+# renderContact() in js/main.js drops any contact line whose value is missing,
+# so these are shown when present and silently skipped when not.
+OPTIONAL_FRONTMATTER = ["phone", "email"]
 
 EXPECTED_SIDEBAR_SECTIONS = [
     "Introduction",
     "Certifications",
     "Languages",
-    "Hobbies",
     "Office / Creative Tools",
     "Technical Tools",
 ]
+
+# Rendered if present, not required. The renderer still routes these to the
+# sidebar (SIDEBAR_SECTIONS in js/main.js), so re-adding one just works.
+OPTIONAL_SIDEBAR_SECTIONS = ["Hobbies"]
 
 EXPECTED_MAIN_SECTIONS = [
     "Professional Experience",
@@ -34,6 +41,8 @@ def test_frontmatter_has_required_field(frontmatter, key):
 
 
 def test_email_looks_valid(frontmatter):
+    if "email" not in frontmatter:
+        pytest.skip("no email in frontmatter — it's optional")
     assert re.match(r"^[^@\s]+@[^@\s]+\.[^@\s]+$", frontmatter["email"]), \
         f"email doesn't look valid: {frontmatter['email']!r}"
 
@@ -53,7 +62,9 @@ def test_section_present(section_map, title):
 
 
 def test_no_unexpected_sections(section_map):
-    expected = set(EXPECTED_SIDEBAR_SECTIONS + EXPECTED_MAIN_SECTIONS)
+    expected = set(
+        EXPECTED_SIDEBAR_SECTIONS + OPTIONAL_SIDEBAR_SECTIONS + EXPECTED_MAIN_SECTIONS
+    )
     extra = set(section_map) - expected
     assert not extra, f"unexpected ## sections present: {extra} (renderer ignores unknown sidebar titles)"
 
@@ -100,6 +111,8 @@ def test_technical_skills_has_groups(section_map):
 ])
 def test_sidebar_list_section_has_items(section_map, title):
     """These sections render as bullet lists — they need at least one - item."""
+    if title in OPTIONAL_SIDEBAR_SECTIONS and title not in section_map:
+        pytest.skip(f"{title} isn't in content.md — it's optional")
     content = section_map[title]
     items = [ln for ln in content.splitlines() if re.match(r"^\s*-\s+\S", ln)]
     assert items, f"{title} has no '- ' bullet items"
