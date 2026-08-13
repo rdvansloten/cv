@@ -1,13 +1,43 @@
-/* ---------- Self-hosted Inter (Variable, Roman) ----------
-   Single file covers weights 100–900 via the variable font axis.
-   Sourced from Google Fonts (Inter v20) and committed to the repo so the
-   page renders identically with no network. */
+/* ---------- Self-hosted Inter (static instances) ----------
+   One file per weight actually used by the stylesheet, instanced from the
+   Inter variable font (Google Fonts, Inter v20) and committed to the repo so
+   the page renders identically with no network.
+
+   These are deliberately NOT the variable font: Chromium's print-to-PDF path
+   cannot embed a variable-font instance as a real TrueType font, so it falls
+   back to unhinted Type 3 glyph procedures — which look mushy in PDF viewers
+   and bloat the file. Static instances embed as proper subset TrueType.
+   Regenerate with scripts/build_fonts.py after changing weights. */
 @font-face {
   font-family: 'Inter';
   font-style: normal;
-  font-weight: 100 900;
+  font-weight: 400;
   font-display: swap;
-  src: url('../assets/fonts/Inter.woff2') format('woff2');
+  src: url('../assets/fonts/Inter-400.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('../assets/fonts/Inter-500.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('../assets/fonts/Inter-600.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('../assets/fonts/Inter-700.woff2') format('woff2');
 }
 
 /* ---------- Design tokens ----------
@@ -58,11 +88,16 @@ body {
 
 a { color: inherit; text-decoration: none; }
 
-/* ---------- Screen frame (mimics paper) ---------- */
+/* ---------- Screen frame (mimics paper) ----------
+   Rounded on screen only — `overflow: hidden` is what makes the sidebar
+   gradient inside `.cv` follow the curve. Both are reset in @media print so
+   the exported PDF keeps square, full-bleed page edges. */
 .page-frame {
   max-width: 210mm;
   margin: 24px auto;
   background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
   box-shadow: 0 12px 40px rgba(20, 35, 60, 0.18);
 }
 
@@ -189,7 +224,7 @@ a { color: inherit; text-decoration: none; }
 .sidebar-section.collapsible > summary::after {
   content: '+';
   color: var(--color-marker-sidebar);
-  font-weight: 300;
+  font-weight: 400;
   font-size: 14pt;
   line-height: 1;
   margin-left: 1em;
@@ -453,6 +488,8 @@ a { color: inherit; text-decoration: none; }
     margin: 0;
     box-shadow: none;
     background: transparent;
+    border-radius: 0;
+    overflow: visible;
   }
   .print-button { display: none !important; }
   /* The .page-background div is unused in this path — kept hidden. */

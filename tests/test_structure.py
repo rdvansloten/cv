@@ -1,4 +1,5 @@
 """Static file & wiring checks — make sure the site has every piece it needs."""
+import re
 from pathlib import Path
 
 import pytest
@@ -73,8 +74,16 @@ def test_fonts_are_self_hosted(root: Path):
         assert needle not in html, f"index.html still references {needle}"
         assert needle not in css, f"styles.css still references {needle}"
 
-    # The woff2 file is present and referenced by @font-face
-    assert (root / "assets/fonts/Inter.woff2").exists(), \
-        "assets/fonts/Inter.woff2 is missing"
-    assert "@font-face" in css and "assets/fonts/Inter.woff2" in css, \
-        "styles.css should declare @font-face pointing at the local Inter.woff2"
+    # Every @font-face points at a file that actually ships in the repo
+    assert "@font-face" in css, "styles.css should declare @font-face"
+    urls = re.findall(r"@font-face[^}]*?url\(['\"]\.\./([^'\"]+)['\"]\)", css, re.S)
+    assert urls, "no local font URLs found in the @font-face blocks"
+    for rel in urls:
+        assert (root / rel).exists(), f"@font-face references missing file: {rel}"
+
+    # The served faces must be the static instances, not the variable font:
+    # Chromium's print-to-PDF path can't embed a variable instance and falls
+    # back to unhinted Type 3 glyphs, which look wrong in the PDF.
+    assert not any(rel.endswith("fonts/Inter.woff2") for rel in urls), \
+        "styles.css serves the variable Inter.woff2 — use the Inter-<weight>.woff2 " \
+        "instances from scripts/build_fonts.py instead"
