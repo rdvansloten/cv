@@ -127,8 +127,6 @@ _October 2020 – March 2022, Amsterdam, NL_
 
 Maintained and improved Funda's .NET ecosystem on AKS, supporting developer teams on CI/CD, monitoring, and adoption of serverless, distributed caching, databases, storage, and secrets management. Ran knowledge-sharing/Q&A sessions, coached juniors 1-on-1, and acted as primary liaison with vendors.
 
-Milestones:
-
 - Migrated traditional datacenter setup to Microsoft Azure
 - Migrated DC/OS (Apache Mesos) workloads to Kubernetes
 - Became a Certified Kubernetes Administrator
@@ -138,8 +136,6 @@ Milestones:
 _May 2018 – September 2020, Amsterdam, NL_
 
 Pre-sales architect advising clients on complex software and design problems; liaison across teams. Laid the groundwork for a new Cloud Engineering team using GitLab, Terraform, Ansible, PowerShell, and Python.
-
-Milestones:
 
 - Pushed adoption and automation of Microsoft Azure
 - Built out Datadog as the monitoring solution
