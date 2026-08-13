@@ -11,12 +11,11 @@
 }
 
 /* ---------- Design tokens ----------
-   The 7 vars after `--color-accent` can be overridden via the `style:` block
-   in content.md's frontmatter (see js/main.js → applyStyle). */
+   The 7 vars under "Overridable from frontmatter" can be overridden via the
+   `style:` block in content.md's frontmatter (see js/main.js → applyStyle). */
 :root {
   --color-sidebar: #173e5e;
   --color-sidebar-dim: #b9c7d5;
-  --color-accent: #f3a583;
   --color-text: #2c3e50;
   --color-muted: #5e7a9b;
   --color-heading: #173e5e;
@@ -27,9 +26,9 @@
   --font-size-sidebar: 9pt;
   --font-size-main-h: 12pt;
   --font-size-sidebar-h: 11pt;
-  --color-name: var(--color-accent);
-  --color-icon: var(--color-accent);
-  --color-marker-sidebar: var(--color-accent);
+  --color-name: var(--color-sidebar);
+  --color-icon: #fff;
+  --color-marker-sidebar: #fff;
   --color-marker-main: var(--color-muted);
 
   --sidebar-width: 33%;
